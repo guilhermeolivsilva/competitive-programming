@@ -1,16 +1,16 @@
-from multiprocessing.sharedctypes import Value
 import subprocess
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
+from pathlib import Path
 
 
-def compile(args: ArgumentParser) -> None:
+def compile(args: Namespace) -> None:
     """
     Compile the exercise into an executable file.
 
     Arguments
     ---------
-    args : ArgumentParser
-        An object of `ArgumentParser` that contains the `platform`, `exercise`
+    args : Namespace
+        An object of `Namespace` that contains the `platform`, `exercise`
         and `language` fields.
 
     Returns
@@ -61,16 +61,61 @@ def _mount_compilation_arguments(
     return extension_map[language]
 
 
+def cleanup(args: Namespace) -> None:
+    """
+    Clean up the project, deleting compiled files.
+
+    Arguments
+    ---------
+    args : Namespace
+        An object of `Namespace` that contains the `platform`, `exercise`
+        and `language` fields.
+
+    Returns
+    -------
+    None
+    """
+    files_in_tree = _get_in_tree_files(args.platform)
+    files_out_of_tree = _get_out_of_tree_files()
+
+    files_to_remove = files_in_tree + files_out_of_tree
+
+    for file in files_to_remove:
+        subprocess.run(["rm", "-f", file])
+
+
+def _get_in_tree_files(platform: str) -> list:
+    _extensions = _get_extensions()
+
+    return [
+        file.resolve()
+        for file in Path(platform).glob("**/*")
+        if file.suffix in _extensions
+    ]
+
+
+def _get_extensions() -> list:
+    return [".class"]
+
+
+def _get_out_of_tree_files() -> list:
+    return ["exercise", "a.out"]
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(
         prog="AutomaticCompiler",
-        description="Compiles any exercise in a given programmin language"
+        description="Compiles any exercise in a given programming language"
     )
 
     parser.add_argument("-p", "--platform")
     parser.add_argument("-e", "--exercise")
     parser.add_argument("-l", "--language")
+    parser.add_argument("--cleanup", action="store_true")
 
     args = parser.parse_args()
 
-    compile(args)
+    if args.cleanup:
+        cleanup(args)
+    else:
+        compile(args)
