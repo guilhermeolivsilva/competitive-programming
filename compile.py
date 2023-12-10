@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import subprocess
 from argparse import ArgumentParser
 
@@ -21,14 +22,17 @@ def compile(args: ArgumentParser) -> None:
     exercise = args.exercise
     language = args.language
 
-    compiler = _get_compiler(language)
-    compilation_arguments = _mount_compilation_arguments(
-        platform,
-        exercise,
-        language
-    )
+    try:
+        compiler = _get_compiler(language)
+        compilation_arguments = _mount_compilation_arguments(
+            platform,
+            exercise,
+            language
+        )
 
-    subprocess.run([compiler, compilation_arguments])
+        subprocess.run([compiler, compilation_arguments])
+    except (ValueError, KeyError):
+        print(f"This exercise has not been implemented in {language} yet.")
 
 
 def _get_compiler(language: str) -> str:
