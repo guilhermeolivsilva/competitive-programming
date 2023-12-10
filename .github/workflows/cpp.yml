@@ -1,4 +1,4 @@
-name: Build C++
+name: Build
 
 on:
   push:
@@ -13,13 +13,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up build environment
+    - name: Set up C++ environment
       run: sudo apt-get install -y build-essential
 
-    - name: Compile all C/C++ files
-      run: |
-        find beecrowd -type f \( -name "*.cpp" \) -exec g++ {} -o {}.out \;
+    - name: Get list of modified files
+      id: files
+      run: echo "::set-output name=files::$(jq -r '.commits[] | .added + .modified' $GITHUB_EVENT_PATH | tr '\n' ',')"
 
-    - name: List compiled files
+    - name: Build modified C++ files
       run: |
-        find beecrowd -type f -name "*.out" -exec echo "Compiled: {}" \;
+        IFS=',' read -ra file_array <<< "${{ steps.files.outputs.files }}"
+        for file in "${file_array[@]}"; do
+          if [[ $file == *".cpp"* ]]; then
+            g++ $file
+          fi
+        done
+
+    - name: Display compiled files
+      run: |
+        find beecrowd -type f -name "target" -prune -o -name "*.cpp" -exec echo "Compiled: {}" \;

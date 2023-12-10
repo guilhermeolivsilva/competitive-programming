@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     paths:
-      - 'beecrowd/**/*.c'
+      - 'beecrowd/**/*.rs'
 
 jobs:
   build:
@@ -13,22 +13,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up C environment
-      run: sudo apt-get install -y build-essential
+    - name: Set up Rust environment
+      uses: actions/setup-rust@v1
 
     - name: Get list of modified files
       id: files
       run: echo "::set-output name=files::$(jq -r '.commits[] | .added + .modified' $GITHUB_EVENT_PATH | tr '\n' ',')"
 
-    - name: Build modified C files
+    - name: Build modified Rust files
       run: |
         IFS=',' read -ra file_array <<< "${{ steps.files.outputs.files }}"
         for file in "${file_array[@]}"; do
-          if [[ $file == *".c"* ]]; then
-            gcc $file
+          if [[ $file == *".rs"* ]]; then
+            rustc $file
           fi
         done
 
     - name: Display compiled files
       run: |
-        find beecrowd -type f -name "target" -prune -o -name "*.c" -exec echo "Compiled: {}" \;
+        find beecrowd -type f -name "target" -prune -o -name "*.rs" -exec echo "Compiled: {}" \;
