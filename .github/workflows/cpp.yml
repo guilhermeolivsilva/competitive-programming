@@ -1,0 +1,25 @@
+name: Build C++
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up build environment
+      run: sudo apt-get install -y build-essential
+
+    - name: Compile all C/C++ files
+      run: |
+        find beecrowd -type f \( -name "*.c" -o -name "*.cpp" \) -exec g++ {} -o {}.out \;
+
+    - name: List compiled files
+      run: |
+        find beecrowd -type f -name "*.out" -exec echo "Compiled: {}" \;
