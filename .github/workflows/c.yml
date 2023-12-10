@@ -18,7 +18,7 @@ jobs:
 
     - name: Compile all C/C++ files
       run: |
-        find beecrowd -type f \( -name "*.c" -o -name "*.cpp" \) -exec gcc {} -o {}.out \;
+        find beecrowd -type f \( -name "*.c" \) -exec gcc {} -o {}.out \;
 
     - name: List compiled files
       run: |
