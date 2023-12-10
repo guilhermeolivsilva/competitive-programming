@@ -2,8 +2,8 @@ name: Build C
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'beecrowd/**/*.c'
 
 jobs:
   build:
