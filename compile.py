@@ -37,7 +37,8 @@ def compile(args: ArgumentParser) -> None:
 
 def _get_compiler(language: str) -> str:
     compiler_map = {
-        "cpp": "clang++"
+        "cpp": "clang++",
+        "rust": "rustc"
     }
 
     return compiler_map[language]
@@ -51,7 +52,8 @@ def _mount_compilation_arguments(
     path = f"{platform}/{exercise}/exercise"
 
     extension_map = {
-        "cpp": f"{path}.cpp"
+        "cpp": f"{path}.cpp",
+        "rust": f"{path}.rs"
     }
 
     return extension_map[language]
