@@ -13,9 +13,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Rust environment
-      uses: rust-build/rust-build.action@v1.4.4
-
     - name: Get list of modified files
       id: files
       run: echo "::set-output name=files::$(jq -r '.commits[] | .added + .modified' $GITHUB_EVENT_PATH | tr '\n' ',')"
