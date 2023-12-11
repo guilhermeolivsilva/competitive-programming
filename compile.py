@@ -99,7 +99,7 @@ def _get_extensions() -> list:
 
 
 def _get_out_of_tree_files() -> list:
-    return ["exercise", "a.out"]
+    return ["exercise", "a.out", "input", "output"]
 
 
 if __name__ == "__main__":
@@ -108,9 +108,9 @@ if __name__ == "__main__":
         description="Compiles any exercise in a given programming language"
     )
 
-    parser.add_argument("-p", "--platform")
+    parser.add_argument("-p", "--platform", default="beecrowd")
     parser.add_argument("-e", "--exercise")
-    parser.add_argument("-l", "--language")
+    parser.add_argument("-l", "--language", default="cpp")
     parser.add_argument("--cleanup", action="store_true")
 
     args = parser.parse_args()
