@@ -9,7 +9,7 @@ public class exercise {
         scanner.close();
 
         try {
-            float radius = Float.parseFloat(input);
+            double radius = Double.parseDouble(input);
             double area = Math.PI * radius * radius;
             System.out.printf("A=%.4f\n", area);
         } catch (NumberFormatException e) {
