@@ -81,7 +81,7 @@ def cleanup(args: Namespace) -> None:
     files_to_remove = files_in_tree + files_out_of_tree
 
     for file in files_to_remove:
-        subprocess.run(["rm", "-f", file])
+        subprocess.run(["rm", "-rf", file])
 
 
 def _get_in_tree_files(platform: str) -> list:
