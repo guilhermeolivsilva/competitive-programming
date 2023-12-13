@@ -10,3 +10,7 @@ exercise
 
 # VS Code stuff
 .vscode/
+
+# Input/output files
+input.*
+output.*
