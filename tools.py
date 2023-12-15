@@ -176,4 +176,4 @@ if __name__ == "__main__":
         mode_method = _get_mode(args.mode)
         mode_method(args)
     except KeyError:
-        print(f"Unexpected mode `{mode}`. Available modes are {_get_mode_map.keys()}")
+        print(f"Unexpected mode `{args.mode}`. Available modes are {_get_mode_map.keys()}")
