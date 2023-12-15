@@ -140,18 +140,18 @@ def setup(args: Namespace) -> None:
         print(f"Could not setup this exercise.")
 
 
-def _mount_template_path(language):
+def _mount_template_path(language: str) -> str:
     path = f"templates/{language}"
     return _get_extension(language).format(path=path)
 
 
-def _get_mode(mode):
+def _get_mode(mode: str) -> str:
     mode_map = _get_mode_map()
 
     return mode_map[mode]
 
 
-def _get_mode_map():
+def _get_mode_map() -> dict:
     return {
         "compile": compile,
         "cleanup": cleanup,
