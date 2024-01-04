@@ -2,6 +2,19 @@
 
 using namespace std;
 
+int gcd(int x, int y) {
+    int remainder;
+
+    while(x > 0) {
+        remainder = x % y;
+        x = y;
+        y = remainder;
+    }
+
+    return y;
+}
+
+
 int main() {
     int testCases, vicente, ricardo, remaining, result;
 
@@ -10,14 +23,7 @@ int main() {
     for(int i = 0; i < testCases; i++) {
         cin >> vicente >> ricardo;
 
-        while(vicente > 0) {
-            remaining = ricardo % vicente;
-            ricardo = vicente;
-            vicente = remaining;
-            result = ricardo;
-        }
-
-        cout << result << endl;
+        cout << gcd(ricardo, vicente) << endl;
     }
 
     return 0;
